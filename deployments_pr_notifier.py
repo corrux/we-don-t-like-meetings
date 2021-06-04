@@ -7,7 +7,6 @@ import requests
 import json
 
 
-
 def post_message_to_slack(slack_webhook_url, text, blocks = None):
     headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
     return requests.post(slack_webhook_url, data=json.dumps({"text": text}), headers=headers)
@@ -25,8 +24,6 @@ staging_release_pr = [pr for pr in release_pr if 'Staging' in pr.title or 'stagi
 prod_release_pr = [pr for pr in release_pr if 'Production' in pr.title or 'production' in pr.title]
 
 no_of_prs = len(release_pr)
-if no_of_prs == 0:
-    sys.exit()
 
 post_message_to_slack(slack_webhook_url,
                       f'{no_of_prs} deployment(s) for today (as per GitHub):'
