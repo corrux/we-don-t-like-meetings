@@ -14,7 +14,7 @@ def post_message_to_slack(slack_webhook_url, text, blocks = None):
 
 
 # using an access token
-gh = Github(os.getenv("GITHUB_ACCESS_TOKEN"))
+gh = Github(os.getenv("GH_ACCESS_TOKEN"))
 slack_webhook_url = os.getenv("SLACK_WEBHOOK_URL")
 release_pr_author = os.getenv("RELEASE_PR_AUTHOR")
 

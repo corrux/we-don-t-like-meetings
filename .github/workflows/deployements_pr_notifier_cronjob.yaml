@@ -2,7 +2,7 @@ name: deployements-pr-notifier-cronjob
 
 on:
   schedule:
-    - cron: '25 12 * * *' # runs at 12:25 UTC/ 14:25 CET everyday
+    - cron: '55 14 * * *' # runs at 12:25 UTC/ 14:25 CET everyday
 
 jobs:
   build:
@@ -26,5 +26,5 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL}}
           RELEASE_PR_AUTHOR: ${{ secrets.RELEASE_PR_AUTHOR }}
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: python deployments_pr_notifier.py
