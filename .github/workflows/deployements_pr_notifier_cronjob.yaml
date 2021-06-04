@@ -2,7 +2,7 @@ name: deployements-pr-notifier-cronjob
 
 on:
   schedule:
-    - cron: '25 14 * * *' # runs at 12:25 UTC/ 14:25 CET everyday
+    - cron: '25 12 * * mon-fri' # runs at 12:25 UTC/ 14:25 CET every weekday
   push:
     branches:
       - main
