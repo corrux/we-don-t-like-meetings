@@ -1,8 +1,11 @@
-from github import Github
+import os
 import yaml
 import sys
+
+from github import Github
 import requests
 import json
+
 
 
 def post_message_to_slack(slack_webhook_url, text, blocks = None):
@@ -11,11 +14,9 @@ def post_message_to_slack(slack_webhook_url, text, blocks = None):
 
 
 # using an access token
-with open(sys.argv[1], "r") as f:
-    config = yaml.safe_load(f)
-gh = Github(config["github_access_token"])
-slack_webhook_url = config["slack_webhook_url"]
-release_pr_author = config["release_pr_author"]
+gh = Github(os.getenv("GITHUB_ACCESS_TOKEN"))
+slack_webhook_url = os.getenv("SLACK_WEBHOOK_URL")
+release_pr_author = os.getenv("RELEASE_PR_AUTHOR")
 
 # Pull Requests on GitHub have to include certain keywords in title for this to work
 issues = gh.search_issues('', state='open', author=release_pr_author, type='pr')
@@ -23,9 +24,10 @@ release_pr = [pr for pr in issues if 'Release' or 'release' in pr.title]
 staging_release_pr = [pr for pr in release_pr if 'Staging' in pr.title or 'staging' in pr.title]
 prod_release_pr = [pr for pr in release_pr if 'Production' in pr.title or 'production' in pr.title]
 
+no_of_prs = len(release_pr)
 if no_of_prs == 0:
     sys.exit()
 
 post_message_to_slack(slack_webhook_url,
-                      f'{len(release_pr)} deployment(s) for today (as per GitHub):'
+                      f'{no_of_prs} deployment(s) for today (as per GitHub):'
                       f' {len(staging_release_pr)} for staging, {len(prod_release_pr)} for production!')
